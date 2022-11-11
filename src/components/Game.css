@@ -1,0 +1,14 @@
+.game__container {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  /* background: linear-gradient(
+    to right,
+    pink 0%,
+    pink 50%,
+    rgb(199, 134, 177) 50%,
+    rgb(199, 134, 177) 100%
+  ); */
+}

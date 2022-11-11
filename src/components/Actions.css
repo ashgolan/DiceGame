@@ -1,0 +1,19 @@
+.actions__container {
+  position: absolute;
+  left: 50%;
+  margin-left: -15%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1%;
+}
+
+.action__btn {
+  width: 50%;
+  padding: 5%;
+  border: none;
+  border-radius: 20px;
+}
