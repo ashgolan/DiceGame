@@ -1,19 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Amarante&family=Barrio&family=Cabin:wght@500&family=Ewert&family=Fira+Code:wght@700&family=Metal+Mania&family=Roboto:wght@700&family=Sail&family=Secular+One&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container__player {
-  background-color: #daa7ba;
-  height: 90vh;
+  margin-top: 1%;
+  height: 100%;
   width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  border-radius: 10px;
 }
 .current__points {
   display: flex;
@@ -23,12 +24,14 @@
   background-color: rgb(209, 33, 101);
   text-align: center;
   color: white;
+  margin-bottom: 2%;
 }
 .title__score {
   display: flex;
   flex-direction: column;
 }
 .player__title {
+  font-family: "Roboto", sans-serif;
   font-size: 2rem;
 }
 .total__points {

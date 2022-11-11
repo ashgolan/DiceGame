@@ -6,7 +6,6 @@
 }
 
 .cube__img {
+  z-index: 1;
   width: 4rem;
-  border: 1px rgb(233, 180, 180) solid;
-  border-radius: 10px;
 }

@@ -3,11 +3,11 @@ import React from "react";
 import styled from "styled-components";
 
 const PlayerContainer = styled.div`
-  background-color: rose;
+  background-color: #cb7f98;
 `;
 function Player(props) {
   return (
-    <PlayerContainer className="container__player">
+    <PlayerContainer style={props.style} className="container__player">
       <div className="title__score">
         <h1 className="player__title">{props.data.name}</h1>
         <h3 className="total__points">{props.data.total}</h3>

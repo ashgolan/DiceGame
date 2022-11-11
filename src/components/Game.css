@@ -1,7 +1,9 @@
 .game__container {
   position: relative;
   width: 80%;
+  height: 90vh;
   margin: auto;
+  margin-top: 1%;
   display: flex;
   justify-content: center;
   /* background: linear-gradient(
