@@ -14,10 +14,7 @@ function Actions(props) {
   return (
     <div className="actions__container">
       <button className="action__btn">NEW GAME</button>
-      <Cubes
-        random1={props.data.cubesPushed[0]}
-        random2={props.data.cubesPushed[1]}
-      ></Cubes>
+      <Cubes randomCubes={props.data.cubesPushed}></Cubes>
       <button onClick={rolling} className="action__btn">
         ROLL DICE
       </button>

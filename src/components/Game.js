@@ -3,16 +3,21 @@ import Player from "./Player";
 import "./Game.css";
 import Actions from "./Actions";
 import getCubes from "../utils/getCubes";
-import { toBePartiallyChecked } from "@testing-library/jest-dom/dist/matchers";
-
 function Game() {
   const cubes = getCubes();
-  const randomize1 = Math.floor(Math.random() * (6 - 1 + 1) + 1);
-  const randomize2 = Math.floor(Math.random() * (6 - 1 + 1) + 1);
+  const numberOfDices = 3;
+  const maxTotal = 100;
+  const player1Name = "Alaa";
+  const player2Name = "Basher";
+  const randomCubes = [];
+  for (let i = 0; i < numberOfDices; i++) {
+    const randomize = Math.floor(Math.random() * (6 - 1 + 1) + 1);
+    randomCubes.push(randomize);
+  }
   const [dataOfPlayer, setDataOfPlayer] = useState({
     player1: {
-      name: "Player1",
-      cubesPushed: [null, null],
+      name: player1Name,
+      cubesPushed: [],
       current: 0,
       isPlay: true,
       total: 0,
@@ -20,8 +25,8 @@ function Game() {
       numOfWins: {},
     },
     player2: {
-      name: "Player2",
-      cubesPushed: [null, null],
+      name: player2Name,
+      cubesPushed: [],
       current: 0,
       isPlay: true,
       total: 0,
@@ -30,17 +35,13 @@ function Game() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [styles, setStyles] = useState({
-    backgroundColorLose: "black",
-  });
-
   const togglePlayer = function () {
     if (dataOfPlayer.player1.isPlay) {
       setDataOfPlayer((p) => ({
         player2: { ...p.player2, isPlay: true, opacityStatus: 1 },
         player1: {
           ...p.player1,
-          cubesPushed: [null, null],
+          cubesPushed: [],
           current: 0,
           isPlay: false,
           opacityStatus: 0.5,
@@ -51,7 +52,7 @@ function Game() {
         player1: { ...p.player1, isPlay: true, opacityStatus: 1 },
         player2: {
           ...p.player2,
-          cubesPushed: [null, null],
+          cubesPushed: [],
           current: 0,
           isPlay: false,
           opacityStatus: 0.5,
@@ -59,22 +60,26 @@ function Game() {
       }));
     }
   };
+
   const rolling = function () {
     if (!isLoading) {
       if (
-        dataOfPlayer.player1.current + dataOfPlayer.player1.total > 100 ||
-        dataOfPlayer.player2.current + dataOfPlayer.player2.total > 100
+        dataOfPlayer.player1.current + dataOfPlayer.player1.total > maxTotal ||
+        dataOfPlayer.player2.current + dataOfPlayer.player2.total > maxTotal
       )
         return;
-      const random1 = cubes[randomize1];
-      const random2 = cubes[randomize2];
+      const imagesOfCubes = [];
+      for (let i = 0; i < numberOfDices; i++) {
+        imagesOfCubes.push(cubes[randomCubes[i]]);
+      }
+
       if (dataOfPlayer.player1.isPlay) {
         setDataOfPlayer((p) => ({
           player2: { ...p.player2 },
           player1: {
             ...p.player1,
-            cubesPushed: [random1, random2],
-            current: p.player1.current + randomize1 + randomize2,
+            cubesPushed: imagesOfCubes,
+            current: p.player1.current + randomCubes.reduce((a, b) => a + b, 0),
           },
         }));
       } else {
@@ -82,12 +87,12 @@ function Game() {
           player1: { ...p.player1 },
           player2: {
             ...p.player2,
-            cubesPushed: [random1, random2],
-            current: p.player2.current + randomize1 + randomize2,
+            cubesPushed: imagesOfCubes,
+            current: p.player2.current + randomCubes.reduce((a, b) => a + b, 0),
           },
         }));
       }
-      if (randomize1 === 6 && randomize2 === 6) {
+      if (randomCubes.every((number) => number === 6)) {
         setIsLoading((lo) => (lo = true));
         setTimeout(() => {
           togglePlayer();
@@ -102,7 +107,7 @@ function Game() {
         player2: { ...p.player2, isPlay: true, opacityStatus: 1 },
         player1: {
           ...p.player1,
-          cubesPushed: [null, null],
+          cubesPushed: [],
           current: 0,
           isPlay: false,
           opacityStatus: 0.5,
@@ -114,7 +119,7 @@ function Game() {
         player1: { ...p.player1, isPlay: true, opacityStatus: 1 },
         player2: {
           ...p.player2,
-          cubesPushed: [null, null],
+          cubesPushed: [],
           current: 0,
           isPlay: false,
           opacityStatus: 0.5,
