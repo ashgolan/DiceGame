@@ -1,9 +1,7 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Game from "./components/Game";
-import styled from "styled-components";
 import StartPage from "./components/StartPage";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 function App() {
   const [details, setDetails] = useState({
