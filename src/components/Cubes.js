@@ -6,13 +6,7 @@ function Cubes(props) {
     return <img className="cube__img" src={cubes}></img>;
   });
 
-  return (
-    <div className="cubes__container">
-      {cubes}
-      {/* <img className="cube__img" src={props.random1}></img>
-      <img className="cube__img" src={props.random2}></img> */}
-    </div>
-  );
+  return <div className="cubes__container">{cubes}</div>;
 }
 
 export default Cubes;

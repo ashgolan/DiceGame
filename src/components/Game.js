@@ -3,12 +3,14 @@ import Player from "./Player";
 import "./Game.css";
 import Actions from "./Actions";
 import getCubes from "../utils/getCubes";
-function Game() {
+function Game(props) {
   const cubes = getCubes();
-  const numberOfDices = 3;
-  const maxTotal = 100;
-  const player1Name = "Alaa";
-  const player2Name = "Basher";
+  console.log(props.details.player1Name);
+  const player1Name = props.details.player1Name;
+  const player2Name = props.details.player2Name;
+  const numberOfDices = props.details.numOfCubes;
+  const target = props.details.target;
+
   const randomCubes = [];
   for (let i = 0; i < numberOfDices; i++) {
     const randomize = Math.floor(Math.random() * (6 - 1 + 1) + 1);
@@ -21,6 +23,7 @@ function Game() {
       current: 0,
       isPlay: true,
       total: 0,
+      isWin: "none",
       opacityStatus: 1,
       numOfWins: {},
     },
@@ -30,11 +33,13 @@ function Game() {
       current: 0,
       isPlay: true,
       total: 0,
+      isWin: "none",
       opacityStatus: 0.5,
       numOfWins: {},
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+
   const togglePlayer = function () {
     if (dataOfPlayer.player1.isPlay) {
       setDataOfPlayer((p) => ({
@@ -60,19 +65,65 @@ function Game() {
       }));
     }
   };
-
+  const winner = function (totalPointsOfPlayer1, totalPointsOfPlayer2) {
+    if (totalPointsOfPlayer1 > target) {
+      setDataOfPlayer((p) => ({
+        player1: { ...p.player1, opacityStatus: 0.5 },
+        player2: {
+          ...p.player2,
+          opacityStatus: 1,
+          isWin: "block",
+        },
+      }));
+    } else if (totalPointsOfPlayer2 > target) {
+      setDataOfPlayer((p) => ({
+        player2: { ...p.player2, opacityStatus: 0.5 },
+        player1: {
+          ...p.player1,
+          opacityStatus: 1,
+          isWin: "block",
+        },
+      }));
+    }
+  };
+  const restartGame = function () {
+    setDataOfPlayer({
+      player1: {
+        name: player1Name,
+        cubesPushed: [],
+        current: 0,
+        isPlay: true,
+        total: 0,
+        isWin: "none",
+        opacityStatus: 1,
+        numOfWins: {},
+      },
+      player2: {
+        name: player2Name,
+        cubesPushed: [],
+        current: 0,
+        isPlay: true,
+        total: 0,
+        isWin: "none",
+        opacityStatus: 0.5,
+        numOfWins: {},
+      },
+    });
+  };
   const rolling = function () {
     if (!isLoading) {
-      if (
-        dataOfPlayer.player1.current + dataOfPlayer.player1.total > maxTotal ||
-        dataOfPlayer.player2.current + dataOfPlayer.player2.total > maxTotal
-      )
-        return;
       const imagesOfCubes = [];
       for (let i = 0; i < numberOfDices; i++) {
         imagesOfCubes.push(cubes[randomCubes[i]]);
       }
-
+      const totalPointsOfPlayer1 =
+        dataOfPlayer.player1.current + dataOfPlayer.player1.total;
+      const totalPointsOfPlayer2 =
+        dataOfPlayer.player2.current + dataOfPlayer.player2.total;
+      if (totalPointsOfPlayer1 > target || totalPointsOfPlayer2 > target) {
+        winner(totalPointsOfPlayer1, totalPointsOfPlayer2);
+        return;
+      }
       if (dataOfPlayer.player1.isPlay) {
         setDataOfPlayer((p) => ({
           player2: { ...p.player2 },
@@ -131,7 +182,9 @@ function Game() {
   return (
     <div className="game__container">
       <Player
-        style={{ opacity: dataOfPlayer.player1.opacityStatus }}
+        style={{
+          opacity: dataOfPlayer.player1.opacityStatus,
+        }}
         data={dataOfPlayer.player1}
       ></Player>
       <Actions
@@ -142,9 +195,12 @@ function Game() {
         }
         run={rolling}
         hold={hold}
+        restart={restartGame}
       ></Actions>
       <Player
-        style={{ opacity: dataOfPlayer.player2.opacityStatus }}
+        style={{
+          opacity: dataOfPlayer.player2.opacityStatus,
+        }}
         data={dataOfPlayer.player2}
       ></Player>
     </div>

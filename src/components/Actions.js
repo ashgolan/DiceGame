@@ -11,9 +11,15 @@ function Actions(props) {
     props.hold();
   };
 
+  const restartHandling = function () {
+    props.restart();
+  };
+
   return (
     <div className="actions__container">
-      <button className="action__btn">NEW GAME</button>
+      <button onClick={restartHandling} className="action__btn">
+        NEW GAME
+      </button>
       <Cubes randomCubes={props.data.cubesPushed}></Cubes>
       <button onClick={rolling} className="action__btn">
         ROLL DICE
