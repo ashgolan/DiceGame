@@ -5,12 +5,10 @@ import Actions from "./Actions";
 import getCubes from "../utils/getCubes";
 function Game(props) {
   const cubes = getCubes();
-  console.log(props.details.player1Name);
   const player1Name = props.details.player1Name;
   const player2Name = props.details.player2Name;
   const numberOfDices = props.details.numOfCubes;
   const target = props.details.target;
-
   const randomCubes = [];
   for (let i = 0; i < numberOfDices; i++) {
     const randomize = Math.floor(Math.random() * (6 - 1 + 1) + 1);
@@ -39,7 +37,6 @@ function Game(props) {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-
   const togglePlayer = function () {
     if (dataOfPlayer.player1.isPlay) {
       setDataOfPlayer((p) => ({
@@ -111,37 +108,65 @@ function Game(props) {
     });
   };
   const rolling = function () {
+    let tempCurrent1;
+    let tempCurrent2;
+    if (dataOfPlayer.player1.isPlay) {
+      tempCurrent1 =
+        dataOfPlayer.player1.current + randomCubes.reduce((a, b) => a + b, 0);
+      tempCurrent2 = dataOfPlayer.player2.current;
+    } else {
+      tempCurrent2 =
+        dataOfPlayer.player2.current + randomCubes.reduce((a, b) => a + b, 0);
+      tempCurrent1 = dataOfPlayer.player1.current;
+    }
     if (!isLoading) {
       const imagesOfCubes = [];
       for (let i = 0; i < numberOfDices; i++) {
         imagesOfCubes.push(cubes[randomCubes[i]]);
       }
-      const totalPointsOfPlayer1 =
-        dataOfPlayer.player1.current + dataOfPlayer.player1.total;
-      const totalPointsOfPlayer2 =
-        dataOfPlayer.player2.current + dataOfPlayer.player2.total;
-      if (totalPointsOfPlayer1 > target || totalPointsOfPlayer2 > target) {
-        winner(totalPointsOfPlayer1, totalPointsOfPlayer2);
-        return;
-      }
+      // console.log(dataOfPlayer.player1.current);
+      // const totalPointsOfPlayer1 = tempCurrent1 + dataOfPlayer.player1.total;
+      // const totalPointsOfPlayer2 = tempCurrent2 + dataOfPlayer.player2.total;
+      // if (totalPointsOfPlayer1 > target || totalPointsOfPlayer2 > target) {
+      //   winner(totalPointsOfPlayer1, totalPointsOfPlayer2);
+      //   return;
+      // }
       if (dataOfPlayer.player1.isPlay) {
+        const tempCurrent =
+          dataOfPlayer.player1.current + randomCubes.reduce((a, b) => a + b, 0);
+        const totalPointsOfPlayer1 = tempCurrent1 + dataOfPlayer.player1.total;
+        const totalPointsOfPlayer2 = dataOfPlayer.player2.total;
         setDataOfPlayer((p) => ({
           player2: { ...p.player2 },
           player1: {
             ...p.player1,
             cubesPushed: imagesOfCubes,
-            current: p.player1.current + randomCubes.reduce((a, b) => a + b, 0),
+            current: tempCurrent,
           },
         }));
+        //check p1
+        if (totalPointsOfPlayer1 > target) {
+          winner(totalPointsOfPlayer1, totalPointsOfPlayer2);
+          return;
+        }
       } else {
+        const tempCurrent =
+          dataOfPlayer.player2.current + randomCubes.reduce((a, b) => a + b, 0);
+        const totalPointsOfPlayer2 = tempCurrent2 + dataOfPlayer.player2.total;
+        const totalPointsOfPlayer1 = dataOfPlayer.player1.total;
         setDataOfPlayer((p) => ({
           player1: { ...p.player1 },
           player2: {
             ...p.player2,
             cubesPushed: imagesOfCubes,
-            current: p.player2.current + randomCubes.reduce((a, b) => a + b, 0),
+            current: tempCurrent,
           },
         }));
+        //check p2
+        if (totalPointsOfPlayer2 > target) {
+          winner(totalPointsOfPlayer1, totalPointsOfPlayer2);
+          return;
+        }
       }
       if (randomCubes.every((number) => number === 6)) {
         setIsLoading((lo) => (lo = true));
