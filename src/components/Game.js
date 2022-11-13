@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Player from "./Player";
 import "./Game.css";
 import Actions from "./Actions";

@@ -15,6 +15,7 @@ function Player(props) {
       <img
         style={{ display: props.data.isWin, width: "25%" }}
         src={winner}
+        alt="img"
       ></img>
       <div className="current__points">
         <label className="current__title">Current</label>
